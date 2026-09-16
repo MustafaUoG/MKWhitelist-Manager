@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.sql.PreparedStatement;
+import javafx.scene.image.Image;
 
 
 import java.sql.Connection;
@@ -81,6 +82,7 @@ public class App extends Application {
         primaryStage.setTitle("MKWhitelist Manager");
         primaryStage.setScene(scene);
         scene.getStylesheets().add(getClass().getResource("/dark-theme.css").toExternalForm());
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/icon.png")));
         primaryStage.show();
     }
 
