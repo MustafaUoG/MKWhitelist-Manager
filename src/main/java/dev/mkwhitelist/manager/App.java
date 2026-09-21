@@ -11,8 +11,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.PreparedStatement;
 import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import java.nio.file.Files;
 
 
 import java.sql.Connection;
@@ -22,11 +28,30 @@ import java.sql.Statement;
 
 public class App extends Application {
 
-    private static final String DB_PATH = "C:/MinecraftTestServer/plugins/MKWhitelist/linked_accounts.db";
+    private String dbPath;
+
+    private boolean isDarkMode = true;
 
     @Override
 
     public void start(Stage primaryStage) {
+
+        dbPath = loadSavedDbPath();
+        if (dbPath == null) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select your linked_accounts.db file");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SQLite Database", "*.db"));
+
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+
+            if (selectedFile == null){
+                System.exit(0);
+            }
+
+            dbPath = selectedFile.getAbsolutePath();
+            saveDbPath(dbPath);
+        }
+
         TableView<LinkedAccount> table = new TableView<>();
 
         TableColumn<LinkedAccount, String> uuidColumn = new TableColumn<>("Minecraft UUID");
@@ -75,9 +100,14 @@ public class App extends Application {
         }
         );
 
+
         HBox controls = new HBox(10, searchField, unlinkButton, refreshButton);
         VBox root = new VBox(10, controls, table);
         Scene scene = new Scene(root, 500, 400);
+
+        Button themeToggleButton = new Button("Toggle Theme");
+        themeToggleButton.setOnAction(event -> toggleTheme(scene));
+        controls.getChildren().add(themeToggleButton);
 
         primaryStage.setTitle("MKWhitelist Manager");
         primaryStage.setScene(scene);
@@ -89,7 +119,7 @@ public class App extends Application {
     private ObservableList<LinkedAccount> loadAccountsFromDatabase() {
         ObservableList<LinkedAccount> accounts = FXCollections.observableArrayList();
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT minecraft_uuid, discord_id FROM linked_accounts;");
 
@@ -108,7 +138,7 @@ public class App extends Application {
     }
 
     private void unlinkAccount(LinkedAccount account, ObservableList<LinkedAccount> accounts){
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             PreparedStatement statement = connection.prepareStatement("DELETE FROM linked_accounts WHERE minecraft_uuid = ?;")){
 
             statement.setString(1, account.getMinecraftUuid());
@@ -118,6 +148,34 @@ public class App extends Application {
         }   catch (Exception e){
             System.err.println("Failed to unlink account: " + e.getMessage());
         }
+    }
+
+    private String loadSavedDbPath(){
+        File settingFile = new File("mkwhitelist-manager-settings.txt");
+        if (settingFile.exists()){
+            try {
+                return Files.readString(settingFile.toPath()).trim();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private void saveDbPath(String path){
+        try {
+            Files.writeString(new File("mkwhitelist-manager-settings.txt").toPath(), path);
+        } catch (Exception e) {
+            System.err.println("Failed to save settings: " + e.getMessage());
+        }
+    }
+
+    private void toggleTheme(Scene scene){
+        isDarkMode = !isDarkMode;
+        scene.getStylesheets().clear();
+
+        String cssFile = isDarkMode ? "/dark-theme.css" : "/light-theme.css";
+        scene.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());
     }
 
     public static void main(String[] args){
