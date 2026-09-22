@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Optional;
 
 public class App extends Application {
 
@@ -90,7 +91,16 @@ public class App extends Application {
         Button unlinkButton = new Button("Unlink Selected");
         unlinkButton.setOnAction(event -> { LinkedAccount selected = table.getSelectionModel().getSelectedItem();
             if (selected != null){
-                unlinkAccount(selected, accounts);
+                Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmAlert.setTitle("Confirm Unlink");
+                confirmAlert.setHeaderText("Unlink this account?");
+                confirmAlert.setContentText("Minecraft UUID: " + selected.getMinecraftUuid() +  "\nDiscord ID: " + selected.getDiscordId() + "\n\nThis player will need to link again to rejoin.");
+
+                Optional<ButtonType> result = confirmAlert.showAndWait();
+
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    unlinkAccount(selected, accounts);
+                }
             }
         }
         );
