@@ -49,3 +49,37 @@
 .table-view .filler{
     -fx-background-color: #232428;
 }
+
+.label {
+    -fx-text-fill: #dbdee1;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: #232428;
+    -fx-padding: 0;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: #232428;
+}
+
+.tab {
+    -fx-background-color: #232428;
+    -fx-background-radius: 0;
+}
+
+.tab:selected {
+    -fx-background-color: #313338;
+}
+
+.tab-label {
+    -fx-text-fill: #b5bac1;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #ffffff;
+}
+
+.tab-pane .tab-content-area {
+    -fx-background-color: #313338;
+}
