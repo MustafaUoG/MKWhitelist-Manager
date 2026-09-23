@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.geometry.Insets;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Optional;
+import java.util.List;
+import java.util.ArrayList;
 
 public class App extends Application {
 
@@ -112,8 +115,20 @@ public class App extends Application {
 
 
         HBox controls = new HBox(10, searchField, unlinkButton, refreshButton);
-        VBox root = new VBox(10, controls, table);
-        Scene scene = new Scene(root, 500, 400);
+        VBox accountsRoot = new VBox(10, controls, table);
+        accountsRoot.setPadding(new Insets(10));
+
+        Tab accountsTab = new Tab("Accounts");
+        accountsTab.setContent(accountsRoot);
+
+        Tab settingsTab = new Tab("Settings");
+        settingsTab.setContent(buildSettingPane());
+
+        TabPane tabPane = new TabPane(accountsTab, settingsTab);
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
+
+        Scene scene = new Scene(tabPane, 500, 400);
 
         Button themeToggleButton = new Button("Toggle Theme");
         themeToggleButton.setOnAction(event -> toggleTheme(scene));
@@ -186,6 +201,87 @@ public class App extends Application {
 
         String cssFile = isDarkMode ? "/dark-theme.css" : "/light-theme.css";
         scene.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());
+    }
+
+    private VBox buildSettingPane(){
+        String configPath = new File(dbPath).getParent() + "/config.yml";
+
+        TextField tokenField = new TextField();
+        TextField guildIdField = new TextField();
+        loadConfigValues(configPath, tokenField, guildIdField);
+
+        Button saveButton = new Button("Save");
+        saveButton.setOnAction(event -> {
+            saveConfigValues(configPath, tokenField.getText(), guildIdField.getText());
+            showInfoAlert("Saved", "Restart your Minecraft server for the changes to take effect");
+        });
+
+        VBox pane = new  VBox(10,new Label("Discord Bot Token:"), tokenField, new Label("Discord Guild ID:"), guildIdField, saveButton);
+
+        pane.setPadding(new Insets(15));
+        return pane;
+    }
+
+    private void loadConfigValues(String configPath, TextField tokenField, TextField guildId){
+        try{
+            List<String> lines = Files.readAllLines(new File(configPath).toPath());
+            for (String line : lines){
+                String trimmed = line.trim();
+                if (trimmed.startsWith("bot-token:")){
+                    tokenField.setText(extractValue(trimmed));
+                } else if (trimmed.startsWith("guild-id:")) {
+                    guildId.setText(extractValue(trimmed));
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to load config" + e.getMessage());
+        }
+    }
+
+    private String extractValue(String line){
+        String value = line.substring(line.indexOf(":") + 1).trim();
+        if (value.startsWith("\"") &&  value.endsWith("\"") && value.length() >= 2){
+            value = value.substring(1, value.length() - 1);
+        }
+        return value;
+    }
+
+    private void saveConfigValues(String configPath, String newToken, String newGuildId){
+        try {
+            File configFile = new File(configPath);
+            List<String> lines = Files.readAllLines(configFile.toPath());
+            List<String> updatedLines = new ArrayList<>();
+
+            for(String line : lines){
+                String trimmed = line.trim();
+                if (trimmed.startsWith("bot-token: ")){
+                    updatedLines.add(replaceValue(line, newToken));
+                } else if (trimmed.startsWith("guild-id:")){
+                    updatedLines.add(replaceValue(line, newGuildId));
+                } else {
+                    updatedLines.add(line);
+                }
+            }
+
+            Files.write(configFile.toPath(), updatedLines);
+        } catch (Exception e) {
+            System.err.println("Failed to save config: " + e.getMessage());
+        }
+    }
+
+    private String replaceValue(String originalLine, String newValue){
+        int indentLength = originalLine.indexOf(originalLine.trim());
+        String prefix = originalLine.substring(0, indentLength);
+        String key = originalLine.trim().substring(0, originalLine.trim().indexOf(":") + 1);
+        return prefix + key + " \"" + newValue + "\"";
+    }
+
+    private void showInfoAlert(String title, String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public static void main(String[] args){
