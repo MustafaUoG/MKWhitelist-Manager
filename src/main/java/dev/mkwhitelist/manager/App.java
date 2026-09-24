@@ -121,8 +121,10 @@ public class App extends Application {
         Tab accountsTab = new Tab("Accounts");
         accountsTab.setContent(accountsRoot);
 
+        Button themeToggleButton = new Button("Toggle theme");
+
         Tab settingsTab = new Tab("Settings");
-        settingsTab.setContent(buildSettingPane());
+        settingsTab.setContent(buildSettingPane(themeToggleButton));
 
         TabPane tabPane = new TabPane(accountsTab, settingsTab);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -130,9 +132,8 @@ public class App extends Application {
 
         Scene scene = new Scene(tabPane, 500, 400);
 
-        Button themeToggleButton = new Button("Toggle Theme");
         themeToggleButton.setOnAction(event -> toggleTheme(scene));
-        controls.getChildren().add(themeToggleButton);
+
 
         primaryStage.setTitle("MKWhitelist Manager");
         primaryStage.setScene(scene);
@@ -203,20 +204,65 @@ public class App extends Application {
         scene.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());
     }
 
-    private VBox buildSettingPane(){
+    private VBox buildSettingPane(Button themeToggleButton){
         String configPath = new File(dbPath).getParent() + "/config.yml";
 
-        TextField tokenField = new TextField();
-        TextField guildIdField = new TextField();
-        loadConfigValues(configPath, tokenField, guildIdField);
+        TextField tokenTextField = new TextField();
+        PasswordField tokenPasswordField = new PasswordField();
+        tokenPasswordField.textProperty().bindBidirectional(tokenTextField.textProperty());
+        tokenTextField.setVisible(false);
+        tokenTextField.managedProperty().bind(tokenTextField.visibleProperty());
+        tokenPasswordField.managedProperty().bind(tokenPasswordField.visibleProperty());
+
+        StackPane tokenFieldStack = new StackPane(tokenPasswordField, tokenTextField);
+
+        Button tokenShowButton = new Button("Show");
+        tokenShowButton.setOnAction(e ->{
+            boolean showing = tokenTextField.isVisible();
+            tokenTextField.setVisible(!showing);
+            tokenTextField.setManaged(!showing);
+            tokenPasswordField.setVisible(showing);
+            tokenPasswordField.setManaged(showing);
+            tokenShowButton.setText(showing ? "Show" : "Hide");
+        });
+        HBox tokenBox = new HBox(5, tokenFieldStack, tokenShowButton);
+
+        TextField guildIdTextField = new TextField();
+        PasswordField guildIdPasswordField = new PasswordField();
+        guildIdPasswordField.textProperty().bindBidirectional(guildIdTextField.textProperty());
+        guildIdTextField.setVisible(false);
+        guildIdTextField.managedProperty().bind(guildIdTextField.visibleProperty());
+        guildIdPasswordField.managedProperty().bind(guildIdPasswordField.visibleProperty());
+
+        StackPane guildIdFieldStack = new StackPane(guildIdPasswordField, guildIdTextField);
+
+        Button guildIdShowButton = new Button("Show");
+        guildIdShowButton.setOnAction(e ->{
+            boolean showing = guildIdTextField.isVisible();
+            guildIdTextField.setVisible(!showing);
+            guildIdTextField.setManaged(!showing);
+            guildIdPasswordField.setVisible(showing);
+            guildIdPasswordField.setManaged(showing);
+            guildIdShowButton.setText(showing ? "Show" : "Hide");
+        });
+        HBox guildIdBox = new HBox(5, guildIdFieldStack, guildIdShowButton);
+
+        loadConfigValues(configPath, tokenTextField, guildIdTextField);
 
         Button saveButton = new Button("Save");
         saveButton.setOnAction(event -> {
-            saveConfigValues(configPath, tokenField.getText(), guildIdField.getText());
+            saveConfigValues(configPath, tokenTextField.getText(), guildIdTextField.getText());
             showInfoAlert("Saved", "Restart your Minecraft server for the changes to take effect");
         });
 
-        VBox pane = new  VBox(10,new Label("Discord Bot Token:"), tokenField, new Label("Discord Guild ID:"), guildIdField, saveButton);
+        Label discordHeader = new Label("Discord Settings");
+        discordHeader.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+
+        Label appearanceHeader = new Label("Appearance");
+        appearanceHeader.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+
+
+        VBox pane = new  VBox(10, discordHeader, new Label("Discord Bot Token:"), tokenBox, new Label("Discord Guild ID:"), guildIdBox, saveButton, appearanceHeader, themeToggleButton);
 
         pane.setPadding(new Insets(15));
         return pane;

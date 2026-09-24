@@ -83,3 +83,10 @@
 .tab-pane .tab-content-area {
     -fx-background-color: #313338;
 }
+
+.password-field {
+    -fx-background-color: #1e1f22;
+    -fx-text-fill: #dbdee1;
+    -fx-background-radius: 6;
+    -fx-padding: 8;
+}
