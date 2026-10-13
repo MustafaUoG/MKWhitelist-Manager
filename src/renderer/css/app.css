@@ -370,7 +370,9 @@ code {
   min-height: 0;
   border-top-left-radius: 10px;
   background: var(--bg-content);
-  overflow: hidden;
+  /* clip rather than hidden: a hidden box can still be scrolled by the browser (when focus moves, say),
+     which would slide the page header out of view. Only .view-body is meant to scroll. */
+  overflow: clip;
 }
 
 .view {
@@ -552,9 +554,36 @@ input::placeholder {
   text-decoration: underline;
 }
 
+.account-name {
+  color: var(--text-strong);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* The two IDs: one above the other normally, side by side once there's a name above them */
+.account-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  max-width: 100%;
+}
+
+.account.has-name .account-details {
+  flex-flow: row wrap;
+  align-items: baseline;
+  gap: 0 10px;
+}
+
 .account-uuid {
   color: var(--text-strong);
   font: 500 14px var(--font-mono);
+}
+
+.account.has-name .account-uuid {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .account-discord {
@@ -752,12 +781,72 @@ input::placeholder {
   user-select: text;
 }
 
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+}
+
+.switch-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.switch-title {
+  color: var(--text-strong);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.switch-help {
+  color: var(--text-muted);
+}
+
+/* A checkbox drawn as a sliding switch */
+.switch {
+  flex: none;
+  position: relative;
+  width: 42px;
+  height: 24px;
+  margin: 0;
+  border-radius: 12px;
+  background: var(--button-secondary);
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.switch::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s;
+}
+
+.switch:checked {
+  background: var(--online);
+}
+
+.switch:checked::before {
+  transform: translateX(18px);
+}
+
 .theme-options {
   display: flex;
   gap: 16px;
 }
 
 .theme-option {
+  /* Keeps the hidden radio button below inside this card, so it scrolls with the page */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;

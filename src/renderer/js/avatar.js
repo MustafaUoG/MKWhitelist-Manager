@@ -27,6 +27,15 @@ export function drawAvatar(canvas, seed) {
   }
 }
 
+// Draws a real Minecraft face. face is the 8x8 pixels worked out in src/main/profiles.js, as base64.
+export function drawFace(canvas, face) {
+  canvas.width = GRID_SIZE;
+  canvas.height = GRID_SIZE;
+
+  const pixels = Uint8ClampedArray.from(atob(face), (character) => character.charCodeAt(0));
+  canvas.getContext('2d').putImageData(new ImageData(pixels, GRID_SIZE, GRID_SIZE), 0, 0);
+}
+
 // FNV-1a: turns a string into a number
 function hash(text) {
   let value = 2166136261;

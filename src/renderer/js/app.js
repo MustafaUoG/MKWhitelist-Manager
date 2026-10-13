@@ -8,8 +8,18 @@ const app = $('#app');
 const dbPanel = $('#db-panel');
 const accountCount = $('#account-count');
 
-const accountsView = createAccountsView({ onLoaded: showDatabaseStatus, onChooseDatabase: chooseDatabase });
-const settingsView = createSettingsView({ onChooseDatabase: chooseDatabase });
+const state = await window.api.getState();
+
+const accountsView = createAccountsView({
+  lookupProfiles: state.lookupProfiles,
+  onLoaded: showDatabaseStatus,
+  onChooseDatabase: chooseDatabase,
+});
+const settingsView = createSettingsView({
+  lookupProfiles: state.lookupProfiles,
+  onProfileLookupsChanged: accountsView.setProfileLookups,
+  onChooseDatabase: chooseDatabase,
+});
 
 // Opens the file picker. Used by the welcome screen, the Settings page and the "couldn't read" screen.
 async function chooseDatabase() {
@@ -71,7 +81,6 @@ for (const item of document.querySelectorAll('.nav-item')) {
 $('#welcome-choose').addEventListener('click', chooseDatabase);
 $('#db-show').addEventListener('click', () => window.api.showDatabaseInFolder());
 
-const state = await window.api.getState();
 $('#app-version').textContent = `MKWhitelist Manager ${state.version}`;
 
 if (state.dbPath) {

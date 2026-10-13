@@ -1,12 +1,14 @@
 import { $, toast } from './ui.js';
 
-// The Settings page. onChooseDatabase opens the file picker.
-export function createSettingsView({ onChooseDatabase }) {
+// The Settings page. lookupProfiles is the saved state of the names-and-skins switch,
+// onProfileLookupsChanged is told when it's flipped, onChooseDatabase opens the file picker.
+export function createSettingsView({ lookupProfiles, onProfileLookupsChanged, onChooseDatabase }) {
   const form = $('#discord-form');
   const tokenInput = $('#bot-token');
   const guildInput = $('#guild-id');
   const notice = $('#config-notice');
   const unsavedBar = $('#unsaved-bar');
+  const lookupsSwitch = $('#profile-lookups');
 
   // What is currently in config.yml, to tell whether the fields have been edited
   let saved = { botToken: '', guildId: '' };
@@ -96,6 +98,18 @@ export function createSettingsView({ onChooseDatabase }) {
       }
     });
   }
+
+  lookupsSwitch.checked = lookupProfiles;
+  lookupsSwitch.addEventListener('change', async () => {
+    // Saved first, because the main process refuses lookups while the setting is off
+    const result = await window.api.setProfileLookups(lookupsSwitch.checked);
+    if (!result.ok) {
+      toast(`Couldn't save the setting: ${result.error}`, 'error');
+      lookupsSwitch.checked = !lookupsSwitch.checked;
+      return;
+    }
+    onProfileLookupsChanged(lookupsSwitch.checked);
+  });
 
   $('#settings-db-show').addEventListener('click', () => window.api.showDatabaseInFolder());
   $('#settings-db-change').addEventListener('click', onChooseDatabase);

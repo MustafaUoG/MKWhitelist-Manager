@@ -3,6 +3,7 @@ const path = require('node:path');
 const settings = require('./settings');
 const database = require('./database');
 const pluginConfig = require('./pluginConfig');
+const profiles = require('./profiles');
 
 // The Windows installer launches the app briefly to create/remove shortcuts. This handles that and exits.
 if (require('electron-squirrel-startup')) {
@@ -93,10 +94,14 @@ function requireDbPath() {
   return dbPath;
 }
 
+// Requests from the page are checked rather than trusted
+function toStrings(values) {
+  return Array.isArray(values) ? values.filter((value) => typeof value === 'string') : [];
+}
+
 function registerIpcHandlers() {
   handle('app:get-state', () => {
-    const { dbPath, theme } = settings.load();
-    return { dbPath, theme, version: app.getVersion() };
+    return { ...settings.load(), version: app.getVersion() };
   });
 
   handle('database:choose', async () => {
@@ -128,6 +133,22 @@ function registerIpcHandlers() {
       throw new Error('Invalid Minecraft UUID.');
     }
     return { removed: database.unlinkAccount(requireDbPath(), minecraftUuid) };
+  });
+
+  // Both profile handlers answer with nothing when lookups are switched off, so the app stays offline
+  handle('profiles:cached', (uuids) => {
+    return { profiles: settings.load().lookupProfiles ? profiles.cached(toStrings(uuids)) : {} };
+  });
+
+  handle('profiles:lookup', async (uuids) => {
+    if (!settings.load().lookupProfiles) {
+      return { profiles: {}, rateLimited: false };
+    }
+    return profiles.lookup(toStrings(uuids));
+  });
+
+  handle('profiles:set-enabled', (enabled) => {
+    settings.save({ lookupProfiles: enabled === true });
   });
 
   handle('config:read', () => {

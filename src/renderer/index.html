@@ -81,7 +81,7 @@
           <h1 class="view-title" id="accounts-title">Linked Accounts</h1>
           <label class="search">
             <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
-            <input id="account-search" type="search" placeholder="Search by UUID or Discord ID" aria-label="Search accounts" spellcheck="false" autocomplete="off">
+            <input id="account-search" type="search" placeholder="Search by name, UUID or Discord ID" aria-label="Search accounts" spellcheck="false" autocomplete="off">
           </label>
           <button class="icon-button" id="accounts-refresh" title="Refresh" aria-label="Refresh accounts">
             <svg class="icon" aria-hidden="true"><use href="#icon-refresh"></use></svg>
@@ -101,7 +101,7 @@
           <div class="empty-state" id="accounts-no-results" hidden>
             <div class="empty-icon"><svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg></div>
             <h2>No accounts match your search</h2>
-            <p>Try part of a Minecraft UUID or a Discord ID.</p>
+            <p>Try part of a name, a Minecraft UUID or a Discord ID.</p>
           </div>
 
           <div class="empty-state" id="accounts-error" role="alert" hidden>
@@ -161,6 +161,17 @@
                 <button class="button is-secondary" id="settings-db-show">Show in Folder</button>
                 <button class="button is-secondary" id="settings-db-change">Change</button>
               </div>
+            </section>
+
+            <section class="settings-section">
+              <h2>Players</h2>
+              <label class="switch-row">
+                <span class="switch-text">
+                  <span class="switch-title">Show Minecraft names and skins</span>
+                  <span class="switch-help">Looks up each linked Minecraft UUID with Mojang. Turn this off to keep the app fully offline.</span>
+                </span>
+                <input type="checkbox" class="switch" id="profile-lookups">
+              </label>
             </section>
 
             <section class="settings-section">

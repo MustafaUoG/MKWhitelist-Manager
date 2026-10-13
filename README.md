@@ -6,7 +6,7 @@ Built with [Electron](https://www.electronjs.org).
 
 ## Features
 
-- **Linked accounts**: every Minecraft UUID and the Discord ID it's linked to, with search, click-to-copy and unlink
+- **Linked accounts**: every player's Minecraft name and face, their UUID and the Discord ID it's linked to, with search, click-to-copy and unlink
 - **Discord settings**: edit the bot token and server ID in the plugin's `config.yml`, with the same checks the plugin runs on startup
 - **Dark and light themes**
 
@@ -20,6 +20,15 @@ After changing the Discord settings, restart your Minecraft server or run `/mkwh
 
 > [!NOTE]
 > Unlinking here doesn't kick a player who is already online straight away. The plugin re-checks online players every 90 seconds and kicks them then.
+
+### Names and skins
+
+Minecraft names and faces are looked up from Mojang, one request per player. They're the only thing the app goes online for.
+
+- Answers are saved for a day, so a renamed player or a new skin can take up to a day to show
+- Players on an offline-mode server (and Bedrock players) don't have Mojang accounts, so they show as a UUID with a generated picture
+- Mojang limits how many lookups it answers at once. With a very long list, some names may only appear after pressing refresh a minute later
+- To keep the app fully offline, turn off **Show Minecraft names and skins** under **Settings**
 
 ## Development
 
@@ -48,13 +57,14 @@ npm run make
 | `src/main/main.js` | Starts the app, creates the window, and answers requests from the page |
 | `src/main/database.js` | Reads and deletes rows in `linked_accounts.db` |
 | `src/main/pluginConfig.js` | Reads and updates the plugin's `config.yml` |
-| `src/main/settings.js` | Remembers the chosen database and theme |
+| `src/main/profiles.js` | Looks up Minecraft names and skins from Mojang and saves the answers |
+| `src/main/settings.js` | Remembers the chosen database, theme and other choices |
 | `src/preload.js` | The short list of things the page is allowed to ask the app to do |
 | `src/renderer/` | The page itself: HTML, CSS and JavaScript |
 
 The page has no direct access to files or the database. It can only call the functions listed in `src/preload.js`, and the main process does the real work.
 
-Your chosen database and theme are saved in `%APPDATA%\MKWhitelist Manager\settings.json`.
+Your choices are saved in `%APPDATA%\MKWhitelist Manager\settings.json`, and looked-up names and faces in `profiles-cache.json` next to it. Deleting the cache file is safe. It just makes the app look everyone up again.
 
 ## Credits
 
