@@ -1,0 +1,73 @@
+/* Every colour in the app comes from these variables, so a theme is just a different set of values. */
+
+:root {
+  --font-ui: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+
+  --titlebar-height: 32px;
+  --sidebar-width: 240px;
+
+  /* Accent colours are the same in both themes */
+  --blurple: #5865f2;
+  --focus: #00a8fc;
+  --green: #008542;
+  --green-hover: #0a9b51;
+  --green-edge: #00632f;
+  --green-bright: #2ecc71;
+  --danger: #da373c;
+  --danger-hover: #a12828;
+  --online: #23a55a;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-frame: #1e1f22;      /* title bar and sidebar. Keep in step with TITLE_BAR_COLORS in main.js */
+  --bg-content: #313338;
+  --bg-raised: #2b2d31;
+  --bg-panel: #2b2d31;
+  --bg-input: #1e1f22;
+  --bg-hover: rgba(78, 80, 88, 0.3);
+  --bg-active: rgba(78, 80, 88, 0.6);
+  --bg-toast: #111214;
+  --border: rgba(255, 255, 255, 0.07);
+  --scrollbar: #1a1b1e;
+
+  --text-strong: #f2f3f5;
+  --text: #dbdee1;
+  --text-label: #b5bac1;
+  --text-muted: #949ba4;
+  --text-danger: #fa777c;
+  --text-warning: #f0b232;
+
+  --button-secondary: #4e5058;
+  --button-secondary-hover: #6d6f78;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-frame: #e3e5e8;
+  --bg-content: #ffffff;
+  --bg-raised: #f2f3f5;
+  --bg-panel: #f2f3f5;
+  --bg-input: #e9eaed;
+  --bg-hover: rgba(116, 127, 141, 0.14);
+  --bg-active: rgba(116, 127, 141, 0.26);
+  --bg-toast: #ffffff;
+  --border: rgba(6, 6, 7, 0.1);
+  --scrollbar: #c4c9ce;
+
+  --text-strong: #060607;
+  --text: #313338;
+  --text-label: #4e5058;
+  --text-muted: #5c5e66;
+  --text-danger: #c9252d;
+  --text-warning: #8a5a00;
+
+  --green-bright: #008542;
+  --button-secondary: #6d6f78;
+  --button-secondary-hover: #4e5058;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}

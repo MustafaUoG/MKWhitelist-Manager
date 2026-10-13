@@ -1,0 +1,1041 @@
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Lets the hidden attribute win over any display rule below */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg-frame);
+  color: var(--text);
+  font: 14px/1.45 var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  cursor: default;
+}
+
+h1,
+h2,
+p,
+dl,
+dd {
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--bg-input);
+  font: 0.92em var(--font-mono);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 4px solid transparent;
+  border-radius: 7px;
+  background: var(--scrollbar);
+  background-clip: padding-box;
+}
+
+.icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+  flex: none;
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+}
+
+.button.is-secondary {
+  background: var(--button-secondary);
+  color: #fff;
+}
+
+.button.is-secondary:hover {
+  background: var(--button-secondary-hover);
+}
+
+.button.is-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.button.is-danger:hover {
+  background: var(--danger-hover);
+}
+
+.button.is-link {
+  background: none;
+  color: var(--text);
+}
+
+.button.is-link:hover {
+  text-decoration: underline;
+}
+
+/* The chunky green button, in the style of the Minecraft Launcher's Play button */
+.button.is-play {
+  border-radius: 2px;
+  background: var(--green);
+  box-shadow: inset 0 -3px 0 var(--green-edge), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.button.is-play:hover {
+  background: var(--green-hover);
+}
+
+.button.is-play:active {
+  box-shadow: inset 0 -1px 0 var(--green-edge);
+  transform: translateY(2px);
+}
+
+.button.is-large {
+  height: 52px;
+  min-width: 260px;
+  padding: 0 32px;
+  font-size: 18px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon-button {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--text-label);
+}
+
+.icon-button:hover {
+  background: var(--bg-hover);
+  color: var(--text-strong);
+}
+
+.icon-button.is-spinning .icon {
+  animation: spin 0.6s linear;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Window frame ---------- */
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  height: var(--titlebar-height);
+  /* The right padding leaves room for the native minimise/maximise/close buttons */
+  padding: 0 150px 0 14px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  -webkit-app-region: drag;
+}
+
+/* macOS puts its window buttons on the left instead */
+:root[data-platform="darwin"] .titlebar {
+  padding: 0 14px 0 80px;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  height: calc(100% - var(--titlebar-height));
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 0;
+  padding: 4px 8px 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px 14px;
+}
+
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.brand-name {
+  color: var(--text-strong);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.brand-sub {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.nav-label {
+  padding: 10px 10px 6px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 42px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.nav-item.is-active {
+  background: var(--bg-active);
+  color: var(--text-strong);
+}
+
+/* The pill on the edge of the window that marks the current page */
+.nav-item.is-active::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  bottom: 9px;
+  left: -8px;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: var(--green-bright);
+}
+
+.nav-badge {
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 18px;
+  margin-left: auto;
+  padding: 0 6px;
+  border-radius: 9px;
+  background: var(--bg-active);
+  color: var(--text-label);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sidebar-spacer {
+  flex: 1;
+}
+
+.db-panel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 8px 6px 8px 12px;
+  border-radius: 8px;
+  background: var(--bg-panel);
+}
+
+.status-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--online);
+}
+
+.db-panel.is-error .status-dot {
+  background: var(--danger);
+}
+
+.db-text {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.db-name,
+.db-folder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.db-name {
+  color: var(--text-strong);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.db-folder {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* ---------- Content area ---------- */
+
+.content {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  border-top-left-radius: 10px;
+  background: var(--bg-content);
+  overflow: hidden;
+}
+
+.view {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.view-header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 16px 0 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Uppercase title with a green underline, like the tabs in the Minecraft Launcher */
+.view-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: auto;
+  color: var(--text-strong);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.view-title::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: var(--green-bright);
+}
+
+.view-body {
+  flex: 1;
+  min-height: 0;
+  padding: 20px 16px 24px 24px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 270px;
+}
+
+.search .icon {
+  position: absolute;
+  left: 10px;
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search input {
+  width: 100%;
+  height: 32px;
+  padding: 0 8px 0 34px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--bg-input);
+  font-size: 13px;
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ---------- Accounts ---------- */
+
+.list-heading {
+  padding: 0 8px 10px;
+  color: var(--text-label);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.account-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.account {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 8px;
+  border-radius: 8px;
+}
+
+/* Divider between rows. It disappears around the hovered row so the highlight has clean edges. */
+.account::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 8px;
+  left: 8px;
+  height: 1px;
+  background: var(--border);
+}
+
+.account:hover {
+  background: var(--bg-hover);
+}
+
+.account:hover::before,
+.account:hover + .account::before {
+  background: none;
+}
+
+.avatar {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  /* The avatar is only 8x8 pixels, scaled up with hard edges so it stays blocky */
+  image-rendering: pixelated;
+}
+
+.account-ids {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.copyable {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  text-align: left;
+}
+
+.copyable-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copyable .icon {
+  width: 13px;
+  height: 13px;
+  color: var(--text-muted);
+  opacity: 0;
+}
+
+.copyable:hover .icon,
+.copyable:focus-visible .icon {
+  opacity: 1;
+}
+
+.copyable:hover .copyable-text {
+  text-decoration: underline;
+}
+
+.account-uuid {
+  color: var(--text-strong);
+  font: 500 14px var(--font-mono);
+}
+
+.account-discord {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.account-discord .copyable-text span {
+  font-family: var(--font-mono);
+}
+
+.unlink-button {
+  height: 30px;
+  padding: 0 12px;
+  background: var(--bg-raised);
+  color: var(--text-label);
+  font-size: 13px;
+}
+
+.account:hover .unlink-button {
+  background: var(--button-secondary);
+  color: #fff;
+}
+
+.account .unlink-button:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 420px;
+  margin: 64px auto 0;
+  text-align: center;
+}
+
+.empty-icon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 8px;
+  border-radius: 20px;
+  background: var(--bg-raised);
+  color: var(--text-muted);
+}
+
+.empty-icon .icon {
+  width: 32px;
+  height: 32px;
+}
+
+.empty-icon.is-danger {
+  color: var(--text-danger);
+}
+
+.empty-state h2 {
+  color: var(--text-strong);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.empty-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ---------- Settings ---------- */
+
+.settings-column {
+  max-width: 640px;
+  /* Leaves space so the unsaved-changes bar never covers the last setting */
+  padding-bottom: 72px;
+}
+
+.settings-section + .settings-section {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.settings-section h2 {
+  margin-bottom: 8px;
+  color: var(--text-strong);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.section-help {
+  margin-bottom: 20px;
+  color: var(--text-muted);
+}
+
+.notice {
+  margin-bottom: 20px;
+  padding: 10px 12px;
+  border-left: 4px solid var(--text-warning);
+  border-radius: 4px;
+  background: var(--bg-raised);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.field + .field {
+  margin-top: 20px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-label);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.secret-input {
+  position: relative;
+}
+
+.secret-input input {
+  width: 100%;
+  height: 40px;
+  padding: 0 44px 0 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: var(--bg-input);
+  font-family: var(--font-mono);
+}
+
+.secret-input input:focus-visible {
+  outline-offset: 0;
+}
+
+.secret-input input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.reveal-button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--text-muted);
+}
+
+.reveal-button:hover {
+  color: var(--text-strong);
+}
+
+.reveal-button .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.field-error {
+  margin-top: 6px;
+  color: var(--text-danger);
+  font-size: 13px;
+}
+
+.path-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--bg-raised);
+}
+
+.path-card-path {
+  flex: 1;
+  min-width: 0;
+  padding: 0 4px;
+  background: none;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.theme-options {
+  display: flex;
+  gap: 16px;
+}
+
+.theme-option {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-label);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* The real radio button stays in the page for keyboard and screen reader users, just out of sight */
+.theme-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* A tiny mock-up of the app in each theme: sidebar, title underline and two rows */
+.theme-preview {
+  position: relative;
+  width: 148px;
+  height: 92px;
+  border-radius: 8px;
+  outline: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.theme-preview.is-dark {
+  background: linear-gradient(90deg, #1e1f22 32%, #313338 32%);
+  --preview-line: #4e5058;
+}
+
+.theme-preview.is-light {
+  background: linear-gradient(90deg, #e3e5e8 32%, #ffffff 32%);
+  --preview-line: #c4c9ce;
+}
+
+.theme-preview::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 8px;
+  width: 30px;
+  height: 7px;
+  border-radius: 3px;
+  background: var(--preview-line);
+  box-shadow: 0 13px 0 var(--preview-line);
+}
+
+.theme-preview::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 60px;
+  width: 34px;
+  height: 4px;
+  background: #2ecc71;
+  box-shadow: 0 18px 0 2px var(--preview-line), 26px 18px 0 2px var(--preview-line), 0 36px 0 2px var(--preview-line), 26px 36px 0 2px var(--preview-line);
+}
+
+.theme-option:hover .theme-preview {
+  outline: 2px solid var(--text-muted);
+}
+
+.theme-option:has(input:checked) .theme-preview {
+  outline: 3px solid var(--blurple);
+}
+
+.theme-option:has(input:checked) .theme-name {
+  color: var(--text-strong);
+}
+
+.theme-option:has(input:focus-visible) .theme-preview {
+  outline: 3px solid var(--focus);
+}
+
+.app-version {
+  margin-top: 32px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.unsaved-bar {
+  position: absolute;
+  right: 24px;
+  bottom: 16px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 640px;
+  padding: 10px 10px 10px 16px;
+  border-radius: 8px;
+  background: var(--bg-toast);
+  box-shadow: var(--shadow), 0 0 0 1px var(--border);
+  animation: rise 0.2s ease-out;
+}
+
+.unsaved-text {
+  flex: 1;
+  color: var(--text-strong);
+  font-weight: 500;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* ---------- Welcome screen ---------- */
+
+.welcome {
+  display: grid;
+  place-items: center;
+  height: calc(100% - var(--titlebar-height));
+  padding: 24px;
+  background: var(--bg-content);
+}
+
+.welcome-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 460px;
+  text-align: center;
+}
+
+.welcome-logo {
+  width: 112px;
+  height: 112px;
+  margin-bottom: 12px;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.welcome h1 {
+  color: var(--text-strong);
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.welcome p {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.welcome .button {
+  margin-top: 16px;
+}
+
+.welcome .welcome-error {
+  color: var(--text-danger);
+  font-size: 14px;
+}
+
+/* ---------- Dialog ---------- */
+
+.modal {
+  width: 440px;
+  max-width: calc(100vw - 48px);
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: var(--bg-content);
+  box-shadow: var(--shadow), 0 0 0 1px var(--border);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.modal[open] {
+  animation: pop 0.15s ease-out;
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+.modal-body {
+  padding: 20px 20px 18px;
+}
+
+.modal-body h2 {
+  margin-bottom: 8px;
+  color: var(--text-strong);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.id-card {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  background: var(--bg-input);
+}
+
+.id-card dt {
+  color: var(--text-label);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.id-card dd {
+  color: var(--text-strong);
+  font: 13px var(--font-mono);
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.id-card dd + dt {
+  margin-top: 10px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 20px;
+  background: var(--bg-raised);
+}
+
+/* ---------- Toasts ---------- */
+
+/* Centred over the content area (the part of the window to the right of the sidebar) */
+.toasts {
+  position: fixed;
+  top: calc(var(--titlebar-height) + 12px);
+  left: calc(var(--sidebar-width) + (100vw - var(--sidebar-width)) / 2);
+  z-index: 10;
+  width: max-content;
+  max-width: calc(100vw - var(--sidebar-width) - 48px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 12px;
+  border-radius: 8px;
+  background: var(--bg-toast);
+  box-shadow: var(--shadow), 0 0 0 1px var(--border);
+  color: var(--text-strong);
+  font-weight: 500;
+  animation: drop 0.2s ease-out;
+}
+
+.toast.is-success .icon {
+  color: var(--online);
+}
+
+.toast.is-error .icon {
+  color: var(--text-danger);
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

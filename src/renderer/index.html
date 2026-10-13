@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'">
+  <title>MKWhitelist Manager</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/theme-init.js"></script>
+</head>
+<body>
+
+  <!-- Icon shapes, drawn elsewhere with <svg class="icon"><use href="#icon-name"></use></svg> -->
+  <svg hidden>
+    <symbol id="icon-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+    <symbol id="icon-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="icon-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="icon-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  </svg>
+
+  <header class="titlebar">MKWhitelist Manager</header>
+
+  <!-- First launch: nothing to manage until a database is chosen -->
+  <main class="welcome" id="welcome" hidden>
+    <div class="welcome-card">
+      <img class="welcome-logo" src="../../assets/icon.png" alt="">
+      <h1>Welcome to MKWhitelist Manager</h1>
+      <p>Choose your server's <code>linked_accounts.db</code> to get started. It's in your Minecraft server folder under <code>plugins/MKWhitelist</code>.</p>
+      <button class="button is-play is-large" id="welcome-choose">Select Database</button>
+      <p class="welcome-error" id="welcome-error" role="alert" hidden></p>
+    </div>
+  </main>
+
+  <div class="app" id="app" hidden>
+    <nav class="sidebar" aria-label="Main">
+      <div class="brand">
+        <img class="brand-logo" src="../../assets/icon.png" alt="">
+        <div class="brand-text">
+          <span class="brand-name">MKWhitelist</span>
+          <span class="brand-sub">Manager</span>
+        </div>
+      </div>
+
+      <div class="nav-label">Manage</div>
+      <button class="nav-item is-active" data-view="accounts">
+        <svg class="icon" aria-hidden="true"><use href="#icon-users"></use></svg>
+        <span>Linked Accounts</span>
+        <span class="nav-badge" id="account-count" hidden></span>
+      </button>
+
+      <div class="sidebar-spacer"></div>
+
+      <button class="nav-item" data-view="settings">
+        <svg class="icon" aria-hidden="true"><use href="#icon-settings"></use></svg>
+        <span>Settings</span>
+      </button>
+
+      <div class="db-panel" id="db-panel">
+        <span class="status-dot" id="db-status" role="img" aria-label="Database connected"></span>
+        <div class="db-text">
+          <div class="db-name" id="db-name"></div>
+          <div class="db-folder" id="db-folder"></div>
+        </div>
+        <button class="icon-button" id="db-show" title="Show in folder" aria-label="Show database in folder">
+          <svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="content">
+
+      <section class="view" id="view-accounts" aria-labelledby="accounts-title">
+        <header class="view-header">
+          <h1 class="view-title" id="accounts-title">Linked Accounts</h1>
+          <label class="search">
+            <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+            <input id="account-search" type="search" placeholder="Search by UUID or Discord ID" aria-label="Search accounts" spellcheck="false" autocomplete="off">
+          </label>
+          <button class="icon-button" id="accounts-refresh" title="Refresh" aria-label="Refresh accounts">
+            <svg class="icon" aria-hidden="true"><use href="#icon-refresh"></use></svg>
+          </button>
+        </header>
+
+        <div class="view-body">
+          <div class="list-heading" id="accounts-heading"></div>
+          <ul class="account-list" id="account-list"></ul>
+
+          <div class="empty-state" id="accounts-empty" hidden>
+            <div class="empty-icon"><svg class="icon" aria-hidden="true"><use href="#icon-link"></use></svg></div>
+            <h2>No linked accounts yet</h2>
+            <p>Players show up here once they run <code>/link</code> in your Discord server.</p>
+          </div>
+
+          <div class="empty-state" id="accounts-no-results" hidden>
+            <div class="empty-icon"><svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg></div>
+            <h2>No accounts match your search</h2>
+            <p>Try part of a Minecraft UUID or a Discord ID.</p>
+          </div>
+
+          <div class="empty-state" id="accounts-error" role="alert" hidden>
+            <div class="empty-icon is-danger"><svg class="icon" aria-hidden="true"><use href="#icon-alert"></use></svg></div>
+            <h2>Couldn't read the database</h2>
+            <p id="accounts-error-message"></p>
+            <div class="empty-actions">
+              <button class="button is-secondary" id="accounts-retry">Try Again</button>
+              <button class="button is-secondary" id="accounts-choose">Choose Another Database</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-settings" aria-labelledby="settings-title" hidden>
+        <header class="view-header">
+          <h1 class="view-title" id="settings-title">Settings</h1>
+        </header>
+
+        <div class="view-body">
+          <div class="settings-column">
+
+            <section class="settings-section">
+              <h2>Discord Bot</h2>
+              <p class="section-help">These are saved to the plugin's <code>config.yml</code>. After saving, restart your Minecraft server or run <code>/mkwhitelist reload</code> for them to take effect.</p>
+              <p class="notice" id="config-notice" role="alert" hidden></p>
+
+              <form id="discord-form" novalidate>
+                <div class="field">
+                  <label for="bot-token">Bot Token</label>
+                  <div class="secret-input">
+                    <input id="bot-token" type="password" spellcheck="false" autocomplete="off" aria-describedby="bot-token-error">
+                    <button type="button" class="reveal-button" data-reveals="bot-token" aria-label="Show bot token" aria-pressed="false">
+                      <svg class="icon" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                    </button>
+                  </div>
+                  <p class="field-error" id="bot-token-error" hidden></p>
+                </div>
+
+                <div class="field">
+                  <label for="guild-id">Server ID</label>
+                  <div class="secret-input">
+                    <input id="guild-id" type="password" spellcheck="false" autocomplete="off" aria-describedby="guild-id-error">
+                    <button type="button" class="reveal-button" data-reveals="guild-id" aria-label="Show server ID" aria-pressed="false">
+                      <svg class="icon" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                    </button>
+                  </div>
+                  <p class="field-error" id="guild-id-error" hidden></p>
+                </div>
+              </form>
+            </section>
+
+            <section class="settings-section">
+              <h2>Database</h2>
+              <div class="path-card">
+                <code class="path-card-path" id="settings-db-path"></code>
+                <button class="button is-secondary" id="settings-db-show">Show in Folder</button>
+                <button class="button is-secondary" id="settings-db-change">Change</button>
+              </div>
+            </section>
+
+            <section class="settings-section">
+              <h2>Appearance</h2>
+              <div class="theme-options" role="radiogroup" aria-label="Theme">
+                <label class="theme-option">
+                  <input type="radio" name="theme" value="dark">
+                  <span class="theme-preview is-dark" aria-hidden="true"></span>
+                  <span class="theme-name">Dark</span>
+                </label>
+                <label class="theme-option">
+                  <input type="radio" name="theme" value="light">
+                  <span class="theme-preview is-light" aria-hidden="true"></span>
+                  <span class="theme-name">Light</span>
+                </label>
+              </div>
+            </section>
+
+            <p class="app-version" id="app-version"></p>
+          </div>
+        </div>
+
+        <div class="unsaved-bar" id="unsaved-bar" hidden>
+          <span class="unsaved-text">You have unsaved changes.</span>
+          <button type="button" class="button is-link" id="config-reset">Reset</button>
+          <button type="submit" form="discord-form" class="button is-play">Save Changes</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <dialog class="modal" id="unlink-dialog" aria-labelledby="unlink-title">
+    <form method="dialog">
+      <div class="modal-body">
+        <h2 id="unlink-title">Unlink this account?</h2>
+        <p>This player will need to link again before they can rejoin the server.</p>
+        <dl class="id-card">
+          <dt>Minecraft UUID</dt>
+          <dd id="unlink-uuid"></dd>
+          <dt>Discord ID</dt>
+          <dd id="unlink-discord"></dd>
+        </dl>
+      </div>
+      <footer class="modal-footer">
+        <button class="button is-link" value="cancel">Cancel</button>
+        <button class="button is-danger" value="confirm">Unlink</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

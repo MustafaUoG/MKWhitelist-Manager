@@ -1,0 +1,24 @@
+{
+  "name": "mkwhitelist-manager",
+  "productName": "MKWhitelist Manager",
+  "version": "2.0.0",
+  "description": "Desktop app for managing MKWhitelist linked accounts",
+  "author": "MustafaUoG",
+  "private": true,
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^8.0.1",
+    "@electron-forge/maker-squirrel": "^8.0.1",
+    "@electron-forge/maker-zip": "^8.0.1",
+    "electron": "^44.7.0"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1",
+    "yaml": "^2.9.1"
+  }
+}
