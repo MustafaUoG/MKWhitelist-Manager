@@ -316,6 +316,10 @@ code {
   flex: 1;
 }
 
+.meow-button:hover .icon {
+  color: #f47fff;
+}
+
 .db-panel {
   display: flex;
   align-items: center;

@@ -1,6 +1,7 @@
 import { $, toast } from './ui.js';
 import { createAccountsView } from './accounts.js';
 import { createSettingsView } from './settings.js';
+import { setUpMeow } from './meow.js';
 
 const welcome = $('#welcome');
 const welcomeError = $('#welcome-error');
@@ -64,7 +65,7 @@ function showDatabaseStatus({ ok, count }) {
 }
 
 function showView(name) {
-  for (const item of document.querySelectorAll('.nav-item')) {
+  for (const item of document.querySelectorAll('.nav-item[data-view]')) {
     const active = item.dataset.view === name;
     item.classList.toggle('is-active', active);
     item.setAttribute('aria-current', active ? 'page' : 'false');
@@ -74,12 +75,14 @@ function showView(name) {
   }
 }
 
-for (const item of document.querySelectorAll('.nav-item')) {
+for (const item of document.querySelectorAll('.nav-item[data-view]')) {
   item.addEventListener('click', () => showView(item.dataset.view));
 }
 
 $('#welcome-choose').addEventListener('click', chooseDatabase);
 $('#db-show').addEventListener('click', () => window.api.showDatabaseInFolder());
+
+setUpMeow({ unlocked: state.meowUnlocked });
 
 $('#app-version').textContent = `MKWhitelist Manager ${state.version}`;
 

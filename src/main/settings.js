@@ -2,7 +2,7 @@ const { app } = require('electron');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const DEFAULTS = { dbPath: null, theme: 'dark', lookupProfiles: true };
+const DEFAULTS = { dbPath: null, theme: 'dark', lookupProfiles: true, meowUnlocked: false };
 
 // Lives in the per-user app data folder, so it works no matter where the app is launched from
 function settingsFile() {
@@ -21,6 +21,7 @@ function load() {
     dbPath: typeof saved.dbPath === 'string' ? saved.dbPath : DEFAULTS.dbPath,
     theme: saved.theme === 'light' ? 'light' : DEFAULTS.theme,
     lookupProfiles: typeof saved.lookupProfiles === 'boolean' ? saved.lookupProfiles : DEFAULTS.lookupProfiles,
+    meowUnlocked: typeof saved.meowUnlocked === 'boolean' ? saved.meowUnlocked : DEFAULTS.meowUnlocked,
   };
 }
 

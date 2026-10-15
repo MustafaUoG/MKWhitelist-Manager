@@ -15,4 +15,5 @@ contextBridge.exposeInMainWorld('api', {
   saveConfig: (values) => ipcRenderer.invoke('config:save', values),
   setTheme: (theme) => ipcRenderer.invoke('theme:set', theme),
   copyText: (text) => ipcRenderer.invoke('clipboard:write', text),
+  setMeowUnlocked: (unlocked) => ipcRenderer.invoke('meow:set-unlocked', unlocked),
 });

@@ -180,6 +180,10 @@ function registerIpcHandlers() {
     mainWindow.setTitleBarOverlay({ ...TITLE_BAR_COLORS[theme], height: TITLE_BAR_HEIGHT });
   });
 
+  handle('meow:set-unlocked', (unlocked) => {
+    settings.save({ meowUnlocked: unlocked === true });
+  });
+
   handle('clipboard:write', (text) => {
     clipboard.writeText(String(text));
   });

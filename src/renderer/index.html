@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'">
   <title>MKWhitelist Manager</title>
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/app.css">
@@ -22,6 +22,7 @@
     <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
     <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
     <symbol id="icon-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="icon-cat" viewBox="0 0 24 24"><path d="M4 3l4.5 4.5h7L20 3v10a8 8 0 0 1-16 0z"/><path d="M9 12h.01M15 12h.01"/><path d="M10 16q1 1 2 0q1 1 2 0"/></symbol>
     <symbol id="icon-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
   </svg>
 
@@ -56,6 +57,12 @@
       </button>
 
       <div class="sidebar-spacer"></div>
+
+      <!-- Secret: hidden until the logo above is clicked five times quickly (see js/meow.js) -->
+      <button class="nav-item meow-button" id="meow-button" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#icon-cat"></use></svg>
+        <span>Meow</span>
+      </button>
 
       <button class="nav-item" data-view="settings">
         <svg class="icon" aria-hidden="true"><use href="#icon-settings"></use></svg>
